@@ -6,8 +6,10 @@ This project repo has been retired, however, for the purposes of the Code Review
 this is still the code that would be reviewed. The instructors Joy Arulraj and
 TA Jaeho Bang are aware of the project pivot accordingly.
 
+
 # Team Contributions
-Each team member contributed evenly to the code generation and data collection.
+Each team member contributed evenly to the code generation and data collection
+and data manipulation.
 
 
 # Contents of the Repo:
@@ -15,21 +17,21 @@ The current repo consists of two main notebooks Flow_Estimation.ipynb and
 MainNotebook.ipynb
 
 # Dependencies
-The notebooks with standard data science libraries.
+The notebook is comptible with standard datascience libraries. In addition,
 
 Pytorch >  1.0 and OpenCV > 3.0 would be required.
 
 These can be can be installed with the following
 
->>> pip install opencv-python
->>> pip install pytorch
+`>>> pip install opencv-python`
+`>>> pip install pytorch`
 
-## Flow_Estimation.ipynb:
+## 1. Flow_Estimation.ipynb:
 This notebook describes the residual calculation and Optical Flow between two
 frames and the methods are tested on frames from the dataset. The results are
 shown inline.
 
-## MainNotebook.ipyb:
+## 2. MainNotebook.ipyb:
 The first preprocessing cell is commented it out. Utilize that to perform
 the pre-processing steps on the dataset.
 1. Resize each frame with center crop
@@ -60,13 +62,14 @@ has been retired.
 # Toy Datasets for notebook testing:
 The toy datasets for testing the notebooks can be downloaded from the following
 links:
-Download both X_dataset_1500 and Y_dataset_1500
-The link to X_dataset_1500 is : https://drive.google.com/open?id=1BVwE8i0OFayRUm7rQONxv6YHbUD4JpJm
-The Link ot Y_dataset_1500 is : https://drive.google.com/open?id=1XienduNZRz0u6PjtUg5EVb5jZctvWI6q
+### Download both X_dataset_1500 and Y_dataset_1500
+
+1. The link to X_dataset_1500 is : https://drive.google.com/open?id=1BVwE8i0OFayRUm7rQONxv6YHbUD4JpJm
+2. The Link ot Y_dataset_1500 is : https://drive.google.com/open?id=1XienduNZRz0u6PjtUg5EVb5jZctvWI6q
 
 For any questions or concers please feel free to reach out to the authors at:
-kgeorge37@gatech.edu - Kevin George
-mike.groff@gatech.edu - Michael Groff
-amlk@gatech.edu - Ali Lakdawala
+- kgeorge37@gatech.edu - Kevin George
+- mike.groff@gatech.edu - Michael Groff
+- amlk@gatech.edu - Ali Lakdawala
 
 
