@@ -24,6 +24,7 @@ Pytorch >  1.0 and OpenCV > 3.0 would be required.
 These can be can be installed with the following
 
 `>>> pip install opencv-python`
+
 `>>> pip install pytorch`
 
 ## 1. Flow_Estimation.ipynb:
