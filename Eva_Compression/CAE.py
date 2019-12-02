@@ -1,4 +1,5 @@
 
+import torch.nn as nn
 class CAE(nn.Module):
     """
     This AE module will be fed 3x128x128 patches from the original image
