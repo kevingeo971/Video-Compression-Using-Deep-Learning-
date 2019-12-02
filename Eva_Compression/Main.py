@@ -16,6 +16,7 @@ import torchvision as tv
 import torch.optim as optim
 import torch.utils.data as utils
 from torch.autograd import Variable
+import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.transforms as T
 import torchvision.datasets as dset
