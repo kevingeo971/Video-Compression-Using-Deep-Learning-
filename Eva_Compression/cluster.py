@@ -1,10 +1,3 @@
-import time
-from sklearn.cluster import AgglomerativeClustering
-
-
-# Assume you have compressed images: images_compressed
-# original_images -> images_compressed (output of the encoder network)
-
 class ClusterModule:
 
     def __init__(self):
