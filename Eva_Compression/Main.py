@@ -29,12 +29,16 @@ from sklearn.model_selection import train_test_split
 
 
 
-parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('integers', metavar='N', type=int, nargs='+',
-                    help='an integer for the accumulator')
-parser.add_argument('--sum', dest='accumulate', action='store_const',
-                    const=sum, default=max,
-                    help='sum the integers (default: find the max)')
+parser = argparse.ArgumentParser(description='Arguments for Eva Storage')
+parser.add_argument('-train',action='store_true',default=False,dest = 'train',
+                    help='''Do you want to train your own network?
+                    Default is False''')
+parser.add_argument('-DETRAC',action='store_true',default=False,dest ='DETRAC',
+                    help='Use UE-DETRAC Dataset. Default is False')
+parser.add_argument('-path',action='store',required = True,dest ='path',
+                    help='Add path to folder')
+
+
 
 args = parser.parse_args()
 
