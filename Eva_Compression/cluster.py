@@ -1,5 +1,8 @@
 class ClusterModule:
-
+    '''
+    This clustering module uses Aglomerative clusterning to cluster compressed 
+    video frames 
+    '''
     def __init__(self):
         self.ac = None
 

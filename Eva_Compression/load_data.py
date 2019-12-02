@@ -1,12 +1,31 @@
-def load_data(path):
+def load_data(path, detrac = False):
 
     data = []
 
-    frames = glob(path + '/*.jpg')
-    
-    for f in tqdm(frames):
-        img = imageio.imread(f)
-        data.append(cv2.resize(img, (100, 100), interpolation = cv2.INTER_AREA))
+    if detrac:
+        c = 0
+        for i in tqdm(os.listdir('DETRAC-Images/')):
+            n_data = []
+            c+=1
+            for j in range(1, len(os.listdir('DETRAC-Images/' + i + '/'))+1):
+                j = str(j)
+                jj= 5-len(j)
+                k = "img" + jj*"0" +j +".jpg"
+                img = imageio.imread('DETRAC-Images/' + i + '/' + k + '/')
+                #print("image", img)
+                n_data.append(cv2.resize(img, (100, 100), interpolation = cv2.INTER_AREA))
+            n_data = np.array(n_data)
+            print(n_data.shape)                          
+            data.append(n_data)
+            if c ==1:
+                break
+        data = np.squeeze(np.array(data))
+    else:
+        frames = glob(path + '/*.jpg')
+        
+        for f in tqdm(frames):
+            img = imageio.imread(f)
+            data.append(cv2.resize(img, (100, 100), interpolation = cv2.INTER_AREA))
                          
     data_load = np.array(data)
     data_load= (data_load - 255)
