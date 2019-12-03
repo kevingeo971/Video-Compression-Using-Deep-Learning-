@@ -1,9 +1,10 @@
 import torch.nn as nn
 class CAE(nn.Module):
     """
-    This AE module will be fed 3x128x128 patches from the original image
+    This Convoluational AutoEncoder module will be fed 3x100x100 resized patches from the original image
     Shapes are (batch_size, channels, height, width)
     Latent representation: 32x32x32 bits per patch => 240KB per image (for 720p)
+    In between Encoder and Decoder are two linear Layers that reduce the final codec shape to (1,1250)
     """
 
     def __init__(self):
@@ -76,8 +77,10 @@ class CAE(nn.Module):
             nn.ZeroPad2d((1, 1, 1, 1)),
             nn.ConvTranspose2d(in_channels=64, out_channels=128, kernel_size=(2, 2), stride=(2, 2))
         )
+        #This is the output to the encode command in forward
         self.encoded_size = 20000
         self.lin_in = nn.Linear( self.encoded_size , int(self.encoded_size/16) )
+        #This is the beginning of the decoding layers
         self.lin_out = nn.Linear(  int(self.encoded_size/16) , self.encoded_size )
 
 
@@ -140,13 +143,11 @@ class CAE(nn.Module):
         self.sh = ec3.shape
         self.encoded = self.lin_in(ec3.view(len(ec3), -1))
 
-
-        #self.encode = ec3
-
+        #outside of training we return codec
         if encode:
           return self.encoded
 
-        #print('train')
+        #otherwise we decode 
         return self.decode(self.encoded)
 
     def decode(self, encoded):

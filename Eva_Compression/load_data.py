@@ -8,10 +8,11 @@ import torch.utils as utils
 import os
 import torch.utils.data as utils
 
+# This function takes a path to a folder of ordered video frames and loads/formats the frames for input to CAE
 def load_data(path, detrac = False):
 
     data = []
-
+    #detrac had an unconventional naming sequence that needs to be accounted seperately so as to not mix up the frame order
     if detrac:
         c = 0
         for i in tqdm(os.listdir('DETRAC-Images/')):
@@ -32,6 +33,7 @@ def load_data(path, detrac = False):
             break
         #data = np.squeeze(np.array(data))
     else:
+        #video frames with correct ordering are much simpler to parse
         frames = glob(path + '/*.jpg')
         
         for f in tqdm(frames):
@@ -39,10 +41,12 @@ def load_data(path, detrac = False):
             data.append(cv2.resize(img, (100, 100), interpolation = cv2.INTER_AREA))
                          
     data_load = np.array(data).transpose(0,3,1,2)
-    print(data_load.shape)
-    data_load= (data_load - 255) / 255
-    #data_load = data_load/255
 
+    #print(data_load.shape)
+    #here we zero center and normalize the data
+    data_load= (data_load - 255) / 255
+
+    #low batch size as frames/model are memory heavy
     batch_size = 8
 
     tensor_x = torch.stack([torch.Tensor(i) for i in data_load])
