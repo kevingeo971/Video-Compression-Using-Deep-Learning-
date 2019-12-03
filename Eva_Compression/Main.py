@@ -34,37 +34,40 @@ from train import train
 
 
 
-parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('integers', metavar='N', type=int, nargs='+',
-                    help='an integer for the accumulator')
-parser.add_argument('--sum', dest='accumulate', action='store_const',
-                    const=sum, default=max,
-                    help='sum the integers (default: find the max)')
-
+parser = argparse.ArgumentParser(description='Arguments for Eva Storage')
+parser.add_argument('-train',action='store_true',default=False,dest = 'train',
+                    help='''Do you want to train your own network?
+                    Default is False''')
+parser.add_argument('-DETRAC',action='store_true',default=False,dest ='DETRAC',
+                    help='Use UE-DETRAC Dataset. Default is False')
+parser.add_argument('-path',action='store',required = True,dest ='path',
+                    help='Add path to folder')
 args = parser.parse_args()
 
-
-print(args)
-
-
-path = ''
-train = False
+path = args.path
+train = args.train
+DETRAC = args.DETRAC
 
 if train:
     pass
 else:
-    test_loader = load_data(path)
+    test_loader = load_data(path,DETRAC)
+    
+    images, _ = next(iter(test_loader)) 
+    print("Shape : ",images[7:8].shape)
+    
     model_n = CAE()
     model_n.load_state_dict(torch.load("CAE_Full_data.pwf"))
+    model_n.cuda()
     
     enc_frames = np.zeros((1,1250))
 
     for batch_idx, batch in enumerate(test_loader):
-        
         output = model_n(batch[0].cuda(),encode=True)
         enc_frames = np.vstack((enc_frames, output.detach().cpu().numpy()))
     enc_frames = enc_frames[1:,:]  
-
+    print(" Enc frame : ", enc_frames.shape)
+    
     CM = ClusterModule()
     labels = CM.run(enc_frames)                             
 

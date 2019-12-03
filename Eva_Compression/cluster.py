@@ -1,3 +1,6 @@
+import time
+from sklearn.cluster import AgglomerativeClustering
+
 class ClusterModule:
 
     def __init__(self):
