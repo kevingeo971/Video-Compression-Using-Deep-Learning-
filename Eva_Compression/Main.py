@@ -16,6 +16,7 @@ import torchvision as tv
 import torch.optim as optim
 import torch.utils.data as utils
 from torch.autograd import Variable
+import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.transforms as T
 import torchvision.datasets as dset
@@ -41,33 +42,32 @@ parser.add_argument('-DETRAC',action='store_true',default=False,dest ='DETRAC',
                     help='Use UE-DETRAC Dataset. Default is False')
 parser.add_argument('-path',action='store',required = True,dest ='path',
                     help='Add path to folder')
-
-
-
 args = parser.parse_args()
 
-
-print(args)
-
-
-path = ''
-train = False
+path = args.path
+train = args.train
+DETRAC = args.DETRAC
 
 if train:
     pass
 else:
-    test_loader = load_data(path)
+    test_loader = load_data(path,DETRAC)
+    
+    images, _ = next(iter(test_loader)) 
+    print("Shape : ",images[7:8].shape)
+    
     model_n = CAE()
     model_n.load_state_dict(torch.load("CAE_Full_data.pwf"))
+    model_n.cuda()
     
     enc_frames = np.zeros((1,1250))
 
     for batch_idx, batch in enumerate(test_loader):
-        
         output = model_n(batch[0].cuda(),encode=True)
         enc_frames = np.vstack((enc_frames, output.detach().cpu().numpy()))
     enc_frames = enc_frames[1:,:]  
-
+    print(" Enc frame : ", enc_frames.shape)
+    
     CM = ClusterModule()
     labels = CM.run(enc_frames)                             
 

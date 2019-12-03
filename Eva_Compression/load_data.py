@@ -1,3 +1,13 @@
+from glob import glob
+from tqdm import tqdm
+import imageio
+import numpy as np
+import cv2
+import torch 
+import torch.utils as utils
+import os
+import torch.utils.data as utils
+
 def load_data(path, detrac = False):
 
     data = []
@@ -16,10 +26,11 @@ def load_data(path, detrac = False):
                 n_data.append(cv2.resize(img, (100, 100), interpolation = cv2.INTER_AREA))
             n_data = np.array(n_data)
             print(n_data.shape)                          
-            data.append(n_data)
-            if c ==1:
-                break
-        data = np.squeeze(np.array(data))
+            data = n_data.copy()
+            #data.append(n_data)
+            #if c ==1:
+            break
+        #data = np.squeeze(np.array(data))
     else:
         frames = glob(path + '/*.jpg')
         
@@ -27,9 +38,10 @@ def load_data(path, detrac = False):
             img = imageio.imread(f)
             data.append(cv2.resize(img, (100, 100), interpolation = cv2.INTER_AREA))
                          
-    data_load = np.array(data)
-    data_load= (data_load - 255)
-    data_load = data_load/255
+    data_load = np.array(data).transpose(0,3,1,2)
+    print(data_load.shape)
+    data_load= (data_load - 255) / 255
+    #data_load = data_load/255
 
     batch_size = 8
 
