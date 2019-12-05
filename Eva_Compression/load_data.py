@@ -23,15 +23,19 @@ Output: loaded data resized to 100x100 tensor ready to input into the dataset
 """
 def load_data(path, detrac = False, train = False):
 
+    
     data = []
     #detrac had an unconventional naming sequence that needs to be accounted seperately so as to not mix up the frame order
     #note that this was simply for testing functionality on the first video in detrac
+    
+    print( '\n Loading Data .. \n')
+    
     if detrac:
         c = 0
-        for i in tqdm(os.listdir('DETRAC-Images/')):
+        for i in os.listdir('DETRAC-Images/'):
             n_data = []
             c+=1
-            for j in range(1, len(os.listdir('DETRAC-Images/' + i + '/'))+1):
+            for j in tqdm(range(1, len(os.listdir('DETRAC-Images/' + i + '/'))+1)):
                 j = str(j)
                 jj= 5-len(j)
                 k = "img" + jj*"0" +j +".jpg"
@@ -39,12 +43,9 @@ def load_data(path, detrac = False, train = False):
                 #print("image", img)
                 n_data.append(cv2.resize(img, (100, 100), interpolation = cv2.INTER_AREA))
             n_data = np.array(n_data)
-            print(n_data.shape)                          
             data = n_data.copy()
-            #data.append(n_data)
-            #if c ==1:
             break
-        #data = np.squeeze(np.array(data))
+        
     else:
         frames = glob(path + '/*.jpg')
         
@@ -58,6 +59,8 @@ def load_data(path, detrac = False, train = False):
 
     batch_size = 8
 
+    print( ' \n Creating dataloader ..')
+    
     tensor_x = torch.stack([torch.Tensor(i) for i in data_load])
 
     train_dataset = utils.TensorDataset(tensor_x,tensor_x)

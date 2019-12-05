@@ -1,19 +1,21 @@
 import cv2
+import os
+import argparse
+from write_frames import write_frames
 
-def write_frames(path_from, path_to):
 
-    cap = cv2.VideoCapture(path_from)
 
-    while(cap.isOpened()):
-        frameId = int(cap.get(1)) #current frame number
-        framename = str(frameId)
-        ret, frame = cap.read()
-        pre = 10-len(framename)
-        if (ret != True):
-            break
-        #storing frames in new folder 
-        filename =path_to + '_' + pre*'0' + framename
-        cv2.imwrite(filename, frame)
-    cap.release()
 
-    return
+parser = argparse.ArgumentParser(description='Arguments for Eva Storage')
+    
+parser.add_argument('-path_to',action='store',required = True,dest ='path_to',
+                    help='Add path to folder')
+    
+parser.add_argument('-path_from',action='store',required = True,dest ='path_from',
+                    help='Add path from video')
+args = parser.parse_args()
+
+path_to = args.path_to
+path_from = args.path_from
+    
+write_frames(path_from, path_to)

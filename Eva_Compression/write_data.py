@@ -1,14 +1,28 @@
-#data = []
 '''
-This function takes in path as the argument. It write the video into "save_path" 
+This function takes in index_list, data_path , save_path as the arguments. It writes a video consisting 
+of the frame in data_path into save_path and writes a text file with the indexed of the representative 
+frame into the same directory 
 '''
+
 import cv2
 import os
 import imageio
 from glob import glob
 
 def write_data(index_list,data_path='',save_path='',Detrac = False):
-
+    
+    p = save_path.split('/')
+    
+    index_path = ''
+    for i in p[:-1]:
+        index_path+=i + '/'
+    
+    with open(index_path + 'representative_frame.txt', 'w') as f:
+        for item in index_list:
+            f.write("%s\n" % item)
+    
+        
+        
     if Detrac:
         c = 0
         width = 960
@@ -35,11 +49,14 @@ def write_data(index_list,data_path='',save_path='',Detrac = False):
         
         fourcc = cv2.VideoWriter_fourcc(*'MP42')
         frames = glob( data_path + '/*jpg') 
-
-        width = frames[0].shape[1]
-        height = frames[0].shape[0]
+        frames = sorted(frames)
+        img_for_shape = imageio.imread( frames[0] )
+        width = img_for_shape.shape[1]
+        height = img_for_shape.shape[0]
         video = cv2.VideoWriter(save_path,fourcc,30, (width,height))
-        for img in frames:
+        for f in frames:
+            #print(f)
+            img = imageio.imread( f )
             video.write(img)
     
         video.release()

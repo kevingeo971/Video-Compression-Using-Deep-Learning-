@@ -39,6 +39,7 @@ from write_data import write_data
 -train = boolean flag indicator model is to be to be retrained
 -DETRAC = boolean flag indicator if using the UE DETRAC dataset 
 -path = string path to data folder
+-save_path = path to where 
 """
 parser = argparse.ArgumentParser(description='Arguments for Eva Storage')
 parser.add_argument('-train',action='store_true',default=False,dest = 'train',
@@ -46,19 +47,29 @@ parser.add_argument('-train',action='store_true',default=False,dest = 'train',
                     Default is False''')
 parser.add_argument('-DETRAC',action='store_true',default=False,dest ='DETRAC',
                     help='Use UE-DETRAC Dataset. Default is False')
-parser.add_argument('-path',action='store',required = True,dest ='path',
-                    help='Add path to folder')
+parser.add_argument('-path',action='store',required = False,dest ='path',
+                    help='Add path to data folder')
+parser.add_argument('-save_path',action='store',required = False, default='',dest ='save_path',
+                    help='Add path to save video')
+parser.add_argument('-verbose',action='store_true',default=False,dest = 'verbose',
+                    help=''' Display losses during training, It is false by default''')
+
+
 args = parser.parse_args()
 
 path = args.path
 train = args.train
 DETRAC = args.DETRAC
-
+save_path = args.save_path
+verbose = args.verbose
 
 # Train/ Test condition. Train trains a new encoder module. Test uses
 # a prexisting model trained on the UE-DETRAC Dataset
+
 if train:    
-    additional_train(path,DETRAC,train,epochs = 2)
+    additional_train(path,DETRAC,train,2,verbose)
+    print('\n Done\n\n')
+    
 else:
     
     # Dataloading
@@ -72,12 +83,14 @@ else:
     
     enc_frames = np.zeros((1,1250))
 
+    print('\n Compressing Frames ..')
+    
     for batch_idx, batch in enumerate(test_loader):
         output = model_n(batch[0].cuda(),encode=True)
         enc_frames = np.vstack((enc_frames, output.detach().cpu().numpy()))
     enc_frames = enc_frames[1:,:]  
-    print(" Enc frame : ", enc_frames.shape)
     
+    print('\n Clustering .. ')
     CM = ClusterModule()
     labels = CM.run(enc_frames)
     CM.plot_distribution()
@@ -90,14 +103,10 @@ else:
             clusters_seen.append(clust)
             index_list.append(i)
     
-    with open('representative_frame.txt', 'w') as f:
-        for item in index_list:
-            f.write("%s\n" % item)
-            
-    write_data(index_list,data_path = path,Detrac=DETRAC)
+    print('\n Writing Data ..')    
+    write_data(index_list,data_path = path, save_path = save_path,Detrac=DETRAC)
         
-    
-    
+    print( '\n Done\n\n ')
 
 
     

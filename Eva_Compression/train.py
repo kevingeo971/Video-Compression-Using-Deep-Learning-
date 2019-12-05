@@ -16,7 +16,7 @@ import torchvision.transforms as transforms
 from load_data import load_data
 from CAE import CAE
 
-def train(path,DETRAC,train,epoch):
+def train(path,DETRAC,train,epoch,verbose=False):
 
     #Dataloading
     train_loader = load_data(path,DETRAC,train)
@@ -28,10 +28,11 @@ def train(path,DETRAC,train,epoch):
     model_n.cuda()
     
     criterion = nn.MSELoss()
-    optimizer = torch.optim.Adam(model_n.parameters(), lr=0.0001)#, weight_decay=1e-5)#, betas = (0.75, 0.9) )
+    optimizer = torch.optim.Adam(model_n.parameters(), lr=0.0001)
 
+    #Function that runs one epoch
     def training(model):
-
+        
         model.train()
 
         for batch_idx, batch in enumerate(tqdm(train_loader)):
@@ -49,7 +50,9 @@ def train(path,DETRAC,train,epoch):
             
         return loss, model
     
+    #Training loop 
+    print('\nTraining ..\n')
     for e in range(epoch):
         loss, model = training(model_n)
         torch.save(model.state_dict(), "CAE_Full_data.pwf")
-        print("\nEpoch : ",epoch+1, " - Loss : ",loss)
+        if verbose : print("\nEpoch : ",epoch+1, " - Loss : ",loss)

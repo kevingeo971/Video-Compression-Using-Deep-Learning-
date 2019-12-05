@@ -33,7 +33,6 @@ class ClusterModule:
         self.ac = AgglomerativeClustering(n_clusters=n_samples // fps)
         start_time = time.time()
         self.ac.fit(image_compressed)
-        print("Time to fit ", n_samples, ": ", time.time() - start_time)
         return self.ac.labels_
 
     def plot_distribution(self):
