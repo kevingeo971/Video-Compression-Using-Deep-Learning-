@@ -1,6 +1,6 @@
 
 
-# Welcome to the Eva Storage Module
+# Eva Storage Module README
 
 ### The storage module provides end to end help reducing the input datasize for fast video analytics.
 
@@ -17,7 +17,7 @@
 
 ## Usage:
 
-### Use the `download_files.sh` to download the pretrained model file and testing video
+##### Use the `download_files.sh` to download the pretrained model file and testing video
 
 
 1. If using UE-DETRAC dataset user can skip directly to the main function.
