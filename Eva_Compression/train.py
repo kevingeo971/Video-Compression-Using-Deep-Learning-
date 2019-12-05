@@ -1,22 +1,55 @@
-#This function serves to train CAE model on batches of shuffled and resized video frames
-def train(model):
+from tqdm import tqdm
+import torch
+import torch.nn as nn
+import torchvision as tv
+import torch.optim as optim
+import torch.utils.data as utils
+from torch.autograd import Variable
+import torch.nn as nn
+import torch.nn.functional as F
+import torchvision.transforms as T
+import torchvision.datasets as dset
+from torchvision.utils import save_image
+from torch.utils.data import DataLoader
+from torch.utils.data import sampler
+import torchvision.transforms as transforms
+from load_data import load_data
+from CAE import CAE
 
-    model.train() #setting model to train 
+def train(path,DETRAC,train,epoch):
 
-    for batch_idx, batch in enumerate(tqdm(train_loader)):
-        torch.cuda.empty_cache() #clearing cache of previous batch data
+    #Dataloading
+    train_loader = load_data(path,DETRAC,train)
+    images, _ = next(iter(train_loader))  
+    
+    # Load pre-trained model 
+    model_n = CAE()
+    model_n.load_state_dict(torch.load("CAE_Full_data.pwf"))
+    model_n.cuda()
+    
+    criterion = nn.MSELoss()
+    optimizer = torch.optim.Adam(model_n.parameters(), lr=0.0001)#, weight_decay=1e-5)#, betas = (0.75, 0.9) )
 
-        images, targets = batch[0], batch[0]
-        images, targets = images.cuda(), targets.cuda()
+    def training(model):
 
-        output = model(images)#Running with encoding flag set to False
+        model.train()
 
-        loss = criterion(output, targets) 
-        loss = torch.sqrt(loss)
-        #loss is now an RMSE values
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-        #print("Epoch : ",epoch, " - Loss : ",loss)
+        for batch_idx, batch in enumerate(tqdm(train_loader)):
+            torch.cuda.empty_cache()
+            images, targets = batch[0], batch[0]
+            images, targets = images.cuda(), targets.cuda()
 
-    return loss
+            output = model(images)
+
+            loss = criterion(output, targets)
+            loss = torch.sqrt(loss)
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            
+        return loss, model
+    
+    for e in range(epoch):
+        loss, model = training(model_n)
+        torch.save(model.state_dict(), "CAE_Full_data.pwf")
+        print("\nEpoch : ",epoch+1, " - Loss : ",loss)

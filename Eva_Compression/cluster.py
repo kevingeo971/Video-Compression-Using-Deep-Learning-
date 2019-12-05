@@ -1,6 +1,28 @@
 import time
 from sklearn.cluster import AgglomerativeClustering
 
+
+"""
+Clustering Class with two primary function run and plot
+###
+run: Fits an Agglomerative Clustering Model and returns the 
+cluster labels 
+
+Inputs: latent representation of image, fps default set at 10. 
+fps = 10 set as default to be applicable to all videos
+
+Outputs: cluster labels from model. 
+###
+
+###
+plot distribution: provides a plot of the cluster distribution for analysis
+
+Inputs: Clustered Model file 
+
+Outputs: Matplotlib based graphic
+###
+
+"""
 class ClusterModule:
 
     def __init__(self):

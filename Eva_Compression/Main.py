@@ -30,11 +30,16 @@ from sklearn.model_selection import train_test_split
 from CAE import CAE
 from cluster import ClusterModule
 from load_data import load_data
-from train import train
+from train import train as additional_train
+from write_data import write_data
 
-
-#parser for user input, need to know where the frames are and whether they are being used to train
-#or need encoding
+# Argument Parser for Main.py:
+"""
+# Syntax: 
+-train = boolean flag indicator model is to be to be retrained
+-DETRAC = boolean flag indicator if using the UE DETRAC dataset 
+-path = string path to data folder
+"""
 parser = argparse.ArgumentParser(description='Arguments for Eva Storage')
 parser.add_argument('-train',action='store_true',default=False,dest = 'train',
                     help='''Do you want to train your own network?
@@ -49,44 +54,50 @@ path = args.path
 train = args.train
 DETRAC = args.DETRAC
 
-if train:
-    pass
-    #TO DO call training function 
+
+# Train/ Test condition. Train trains a new encoder module. Test uses
+# a prexisting model trained on the UE-DETRAC Dataset
+if train:    
+    additional_train(path,DETRAC,train,epochs = 2)
 else:
+    
+    # Dataloading
     test_loader = load_data(path,DETRAC)
-    
     images, _ = next(iter(test_loader)) 
-    print("Shape : ",images[7:8].shape)
     
+    # Load pre-trained model 
     model_n = CAE()
-    model_n.load_state_dict(torch.load("CAE_Full_data.pwf"))#using previsouly saved model 
+    model_n.load_state_dict(torch.load("CAE_Full_data.pwf"))
     model_n.cuda()
     
-    enc_frames = np.zeros((1,1250)) #shape placeholder
+    enc_frames = np.zeros((1,1250))
 
     for batch_idx, batch in enumerate(test_loader):
-        output = model_n(batch[0].cuda(),encode=True) #encoding
-        enc_frames = np.vstack((enc_frames, output.detach().cpu().numpy())) #stacking frame codecs
-    enc_frames = enc_frames[1:,:]  #removing placeholder
-    print(" Enc frame : ", enc_frames.shape) #shape check
+        output = model_n(batch[0].cuda(),encode=True)
+        enc_frames = np.vstack((enc_frames, output.detach().cpu().numpy()))
+    enc_frames = enc_frames[1:,:]  
+    print(" Enc frame : ", enc_frames.shape)
     
     CM = ClusterModule()
-    labels = CM.run(enc_frames)#cluster generation                     
+    labels = CM.run(enc_frames)
+    CM.plot_distribution()
 
     clusters_seen = []
     index_list = []
-
-    #choosing first (temporal metric) member of each cluster group 
     for i in range(enc_frames.shape[0]):
         clust = labels[i]
         if clust not in clusters_seen:
             clusters_seen.append(clust)
             index_list.append(i)
-
-    print(index_list) #returning index list
-    #TO DO 
-    #return list in text file and frames in compressed avi format
-    #user input with save path
+    
+    with open('representative_frame.txt', 'w') as f:
+        for item in index_list:
+            f.write("%s\n" % item)
+            
+    write_data(index_list,data_path = path,Detrac=DETRAC)
+        
+    
+    
 
 
     
