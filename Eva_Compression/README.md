@@ -22,14 +22,19 @@
 ### preprocess_data.py
 Use `preprocess_data` to format your video into sequentially labelled frames for training.
 
-Inputs: path to video, output path
+Inputs:
+
 
 
 ### Main.py
 Main function has the following inputs:
 `-train` : Boolean flag to check whether to train the auto-encoder
 `-DETRAC`: Boolean flag to use DETRAC dataset
-`path` : String containing path
+
+** Functionality needed only for custome video input **
+`-path` : String original path to video frames *(please see `preprocess_data.py`)*
+`-save_path` : String path to save output video
+
 
 Usage example:
 
