@@ -31,7 +31,7 @@ Preprocessing functionality can be browsed with the help command:
 `>>> python preprocessing.py -h`
 
 
-There are two required inputs:
+There are two required inputs:<br/>
 `path_from`: Add path to actual video which needs to be transformed into sequential frames<br/>
 `path_to`: Add path to folder where output frames will be same
 
@@ -53,6 +53,16 @@ Main function has the following inputs:<br/>
 `-save_path` : String path to save output video
 
 
-Usage example:
+### Test example:
+To preprocess the video: <br/>
+`>>> python preprocessing.py -path_to "test_folder" -path_from "test.avi"` <br/>
 
-`>>> python Main.py -train -DETRAC "DETRAC/"`
+To train: <br/>
+`>>> python Main.py -train -path "test_folder"`<br/>
+To test:
+`>>> python Main.py -path "test_folder" -save_path "test_output/test.avi"`
+
+*Note: That the folders passed in the above commands need to be created and should be empty*
+
+
+
