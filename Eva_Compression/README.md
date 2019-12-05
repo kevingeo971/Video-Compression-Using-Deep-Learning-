@@ -59,7 +59,7 @@ To preprocess the video: <br/>
 
 To train: <br/>
 `>>> python Main.py -train -path "test_folder"`<br/>
-To test:
+To test:<br/>
 `>>> python Main.py -path "test_folder" -save_path "test_output/test.avi"`
 
 *Note: That the folders passed in the above commands need to be created and should be empty*
