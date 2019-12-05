@@ -31,7 +31,7 @@ Main function has the following inputs:
 `-train` : Boolean flag to check whether to train the auto-encoder
 `-DETRAC`: Boolean flag to use DETRAC dataset
 
-** Functionality needed only for custome video input **
+**Functionality needed only for custome video input**
 `-path` : String original path to video frames *(please see `preprocess_data.py`)*
 `-save_path` : String path to save output video
 
