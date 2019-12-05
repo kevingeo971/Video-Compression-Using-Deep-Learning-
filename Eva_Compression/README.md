@@ -28,14 +28,14 @@ Inputs:
 
 ### Main.py
 Main function has the following inputs:
-`-train` : Boolean flag to check whether to train the auto-encoder
-`-DETRAC`: Boolean flag to use DETRAC dataset
+`-train` : Boolean flag to check whether to train the auto-encoder  <br/>
+`-DETRAC`: Boolean flag to use DETRAC dataset<br/>
 
-**Functionality needed only for custome video input**
-`-path` : String original path to video frames *(please see `preprocess_data.py`)*
+**Functionality needed only for custome video input**<br/>
+`-path` : String original path to video frames *(please see `preprocess_data.py`)*<br/>
 `-save_path` : String path to save output video
 
 
 Usage example:
 
-`>>> python Main.py -train -DETRAC "DETRAC/"
+`>>> python Main.py -train -DETRAC "DETRAC/"`
