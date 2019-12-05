@@ -16,20 +16,37 @@
 
 
 ## Usage:
+
+### Use the `download_files.sh` to download the pretrained model file and testing video
+
+
 1. If using UE-DETRAC dataset user can skip directly to the main function.
 2. Using your own individual video, the video likely needs to be preprocesed and files need to be labelled in sequential order for input to train function.
 
-### preprocess_data.py
-Use `preprocess_data` to format your video into sequentially labelled frames for training.
+### preprocessing.py
+Use `preprocessing.py` to format your video into sequentially labelled frames for training.
 
-Inputs:
+Preprocessing functionality can be browsed with the help command:
 
+`>>> python preprocessing.py -h`
+
+
+There are two required inputs:
+`path_from`: Add path to actual video which needs to be transformed into sequential frames<br/>
+`path_to`: Add path to folder where output frames will be same
 
 
 ### Main.py
-Main function has the following inputs:
+
+Main functionality can be browsed with the help command:
+
+`>>> python Main.py -h`
+
+
+Main function has the following inputs:<br/>
 `-train` : Boolean flag to check whether to train the auto-encoder  <br/>
 `-DETRAC`: Boolean flag to use DETRAC dataset<br/>
+`-verbose`: Boolean flag to print losses in each iteration of training <br/>
 
 **Functionality needed only for custome video input**<br/>
 `-path` : String original path to video frames *(please see `preprocess_data.py`)*<br/>
