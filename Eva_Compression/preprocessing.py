@@ -1,21 +1,20 @@
 import cv2
 import os
 import argparse
-from write_frames import write_frames
 
-
-
-
-parser = argparse.ArgumentParser(description='Arguments for Eva Storage')
+def preprocessing( path_from ):
     
-parser.add_argument('-path_to',action='store',required = True,dest ='path_to',
-                    help='Add path to folder')
-    
-parser.add_argument('-path_from',action='store',required = True,dest ='path_from',
-                    help='Add path from video')
-args = parser.parse_args()
+    print('\n Preprocessing ..\n')
+    cap = cv2.VideoCapture(path_from)
 
-path_to = args.path_to
-path_from = args.path_from
-    
-write_frames(path_from, path_to)
+    frame_list=[]
+    while(cap.isOpened()):
+        frameId = int(cap.get(1)) #current frame number
+        framename = str(frameId)
+        ret, frame = cap.read()
+        if (ret != True):
+            break
+        frame_list.append( frame )
+        
+    return frame_list
+        

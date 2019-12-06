@@ -31,7 +31,8 @@ from CAE import CAE
 from cluster import ClusterModule
 from load_data import load_data
 from train import train as additional_train
-from write_data import write_data
+from write_original_video import write_original_video
+from save_rep_video import save_compressed_video
 
 # Argument Parser for Main.py:
 """
@@ -41,16 +42,34 @@ from write_data import write_data
 -path = string path to data folder
 -save_path = path to where 
 """
+
 parser = argparse.ArgumentParser(description='Arguments for Eva Storage')
+
 parser.add_argument('-train',action='store_true',default=False,dest = 'train',
                     help='''Do you want to train your own network?
                     Default is False''')
+
 parser.add_argument('-DETRAC',action='store_true',default=False,dest ='DETRAC',
                     help='Use UE-DETRAC Dataset. Default is False')
-parser.add_argument('-path',action='store',required = False,dest ='path',
+
+parser.add_argument('-path',action='store',required = True,dest ='path',
                     help='Add path to data folder')
-parser.add_argument('-save_path',action='store',required = False, default='',dest ='save_path',
-                    help='Add path to save video')
+
+parser.add_argument('-save_original_path',action='store',required = False, default='',dest ='save_original_path',
+                    help='Add path to save video. This is needed only if the original video needs to be scaled and saved')
+
+parser.add_argument('-save_compressed_path',action='store',required = True, default='',dest ='save_compressed_path',
+                    help='Add path to save Compressed video')
+
+parser.add_argument('-scale',action='store', dest = 'scale', type=float,
+                    help=''' The scale value or height width to save the original video. Needs to be between 0 and 1 ''')
+
+parser.add_argument('-width',action='store', dest = 'width', type=int,
+                    help=''' The scale value or height width to save the original video ''')
+
+parser.add_argument('-height',action='store', dest = 'height',type=int,
+                    help=''' The scale value or height width to save the original video ''')
+
 parser.add_argument('-verbose',action='store_true',default=False,dest = 'verbose',
                     help=''' Display losses during training, It is false by default''')
 
@@ -60,8 +79,22 @@ args = parser.parse_args()
 path = args.path
 train = args.train
 DETRAC = args.DETRAC
-save_path = args.save_path
+save_original_path = args.save_original_path
+save_compressed_path = args.save_compressed_path
 verbose = args.verbose
+scale = args.scale
+width = args.width
+height = args.height
+
+if path is not None:
+    if scale is None and width is None:
+        raise Exception("Scale or Height and Width Not passed along with save_original_path")
+        
+
+if scale is None and width is not None:
+    scale = (width, height)
+    
+
 
 # Train/ Test condition. Train trains a new encoder module. Test uses
 # a prexisting model trained on the UE-DETRAC Dataset
@@ -73,7 +106,7 @@ if train:
 else:
     
     # Dataloading
-    test_loader = load_data(path,DETRAC)
+    test_loader, frame_list = load_data(path,DETRAC)
     images, _ = next(iter(test_loader)) 
     
     # Load pre-trained model 
@@ -103,10 +136,15 @@ else:
             clusters_seen.append(clust)
             index_list.append(i)
     
-    print('\n Writing Data ..')    
-    write_data(index_list,data_path = path, save_path = save_path,Detrac=DETRAC)
+    if scale is not None:
+        print('\n Writing Original Scaled Video Data ..')    
+        write_original_video(frame_list, scale = scale ,data_path = path, save_original_path = save_original_path,Detrac=DETRAC)
         
-    print( '\n Done\n\n ')
+    
+    save_compressed_video( frame_list, save_compressed_path , index_list)
+    
+    
+    print( '\n Done\n ')
 
 
     
