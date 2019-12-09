@@ -2,9 +2,7 @@
 
 
 # Note from the authors:
-This project repo has been retired, however, for the purposes of the Code Review
-this is still the code that would be reviewed. The instructors Joy Arulraj and
-TA Jaeho Bang are aware of the project pivot accordingly.
+This project repo has been retired, please refer to the Eva_Compression Directory for recent project work
 
 
 # Team Contributions

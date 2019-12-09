@@ -59,10 +59,12 @@ test to be possible. Within the Eva infrastructure the frame information would
 live as database meta data for frames and videos.
 
 
-
-
-
 *Note: That the folders passed in the above commands need to be created and should be empty*
 
 
+
+For any questions or concers please feel free to reach out to the authors at:
+- kgeorge37@gatech.edu - Kevin George
+- mike.groff@gatech.edu - Michael Groff
+- amlk@gatech.edu - Ali Lakdawala
 
