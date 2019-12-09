@@ -4,6 +4,7 @@
 
 ### The storage module provides end to end help reducing the input datasize for fast video analytics.
 
+*Note a GPU is required for using this module*
 
 #### Functionality within this module:
 1. Using a pre-trained model on the UE-DETRAC Dataset to get compressed clustered representations.
@@ -19,23 +20,6 @@
 
 ##### Use the `download_files.sh` to download the pretrained model file and testing video
 
-
-1. If using UE-DETRAC dataset user can skip directly to the main function.
-2. Using your own individual video, the video likely needs to be preprocesed and files need to be labelled in sequential order for input to train function.
-
-### preprocessing.py
-Use `preprocessing.py` to format your video into sequentially labelled frames for training.
-
-Preprocessing functionality can be browsed with the help command:
-
-`>>> python preprocessing.py -h`
-
-
-There are two required inputs:<br/>
-`path_from`: Add path to actual video which needs to be transformed into sequential frames<br/>
-`path_to`: Add path to folder where output frames will be same
-
-
 ### Main.py
 
 Main functionality can be browsed with the help command:
@@ -43,26 +27,40 @@ Main functionality can be browsed with the help command:
 `>>> python Main.py -h`
 
 
-Main function has the following inputs:<br/>
-`-train` : Boolean flag to check whether to train the auto-encoder  <br/>
-`-DETRAC`: Boolean flag to use DETRAC dataset<br/>
-`-verbose`: Boolean flag to print losses in each iteration of training <br/>
+Main function has the following inputs: <br/>
+`-train` = boolean flag indicator model is to be to be retrained  <br/>
+`-DETRAC` = boolean flag indicator if using the UE DETRAC dataset  <br/>
+`-path` = string path to original video  <br/>
+`-save_original_path` = path to where to save scale orginnal video  <br/>
+`-cbir` = wherether or not to reprocude the recovered video for CBIR  <br/>
+`-save_cbir_path` = path to save the recovered video   <br/>
+`-save_compressed_path` = path to save the compressed  <br/>
+`-scale` = scale to resize the original video <br/>
+`-width` = width to reduce the original video to <br/>
+`-height` = height to erduce the original video to <br/>
+`-verbose` = boolean flag to print loss during training  <br/>
+`-save_codec` = boolean flag to save the compressed codec <br/>
 
-**Functionality needed only for custome video input**<br/>
-`-path` : String original path to video frames *(please see `preprocess_data.py`)*<br/>
-`-save_path` : String path to save output video
 
-### Testing
-#TO DO 
+### Testing & Usage
+We have defined a few explicit tests: <br/>
 
-### Test example:
-To preprocess the video: <br/>
-`>>> python preprocessing.py -path_to "test_folder" -path_from "test.avi"` <br/>
+To re-train the network on a new video use the following command:  <br/>
+`>>> python Main.py -path 'test.avi' -train -verbose`
 
-To train: <br/>
-`>>> python Main.py -train -path "test_folder"`<br/>
-To test:<br/>
-`>>> python Main.py -path "test_folder" -save_path "test_output/test.avi"`
+To compress a video at the original resolution:   <br/>
+`>>> python Main.py -path 'test.avi' -save_compressed_path 'comp.avi'`
+
+To test query frames for CBIR reconstruction of original video: <br/>
+`>>>python Main.py -path 'test.avi' -save_cbir_path 'cbir.avi' -cbir`
+
+For recovery function the indexed frames have been hard coded for the above
+test to be possible. Within the Eva infrastructure the frame information would
+live as database meta data for frames and videos.
+
+
+
+
 
 *Note: That the folders passed in the above commands need to be created and should be empty*
 
