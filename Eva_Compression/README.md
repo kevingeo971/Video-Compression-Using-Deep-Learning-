@@ -15,9 +15,9 @@
 - `_.avi` compressed video in mp4 version. Can be used to extract representative frames within the video dataset.
 
 #### Secondary Outputs:
-`_.npy` encoded video file of representative frames
-`_.pwf` new model file if model is trained
-`_.avi` rescaled original video if scale is chosen or recovered video from CBIR if CBIR flag is chosen
+`_.npy` encoded video file of representative frames <br/>
+`_.pwf` new model file if model is trained<br/>
+`_.avi` rescaled original video if scale is chosen or recovered video from CBIR if CBIR flag is chosen<br/>
 
 ## Usage:
 
