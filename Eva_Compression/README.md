@@ -12,9 +12,12 @@
 
 
 #### Primary Outputs:
-- `_.txt` file with the indexes of the representative frames from your input dataset. (Can use UE-DETRAC)
 - `_.avi` compressed video in mp4 version. Can be used to extract representative frames within the video dataset.
 
+#### Secondary Outputs:
+`_.npy` encoded video file of representative frames
+`_.pwf` new model file if model is trained
+`_.avi` rescaled original video if scale is chosen or recovered video from CBIR if CBIR flag is chosen
 
 ## Usage:
 
@@ -42,28 +45,35 @@ Main function has the following inputs: <br/>
 `-save_codec` = boolean flag to save the compressed codec <br/>
 
 
-### Testing & Usage
+### Testing
 We have defined a few explicit tests: <br/>
 
 To re-train the network on a new video use the following command:  <br/>
 `>>> python Main.py -path 'test.avi' -train -verbose`
 
+Output would overwrite the existing model file <br/>
+
 To compress a video at the original resolution:   <br/>
 `>>> python Main.py -path 'test.avi' -save_compressed_path 'comp.avi'`
+
+Output would return a compressed video that will look like a sped-up version of
+the original input video. <br/>
 
 To test query frames for CBIR reconstruction of original video: <br/>
 `>>>python Main.py -path 'test.avi' -save_cbir_path 'cbir.avi' -cbir`
 
+Output would be a clip which is compiled from the relevants frames of the original video <br/>
+
 For recovery function the indexed frames have been hard coded for the above
 test to be possible. Within the Eva infrastructure the frame information would
-live as database meta data for frames and videos.
+live as database meta data for frames and videos. <br/>
 
 
-*Note: That the folders passed in the above commands need to be created and should be empty*
+*Note: That the folders passed in the above commands need to be created and should be empty* <br/>
 
 
 
-For any questions or concers please feel free to reach out to the authors at:
+For any questions or concers please feel free to reach out to the authors at:<br/>
 - kgeorge37@gatech.edu - Kevin George
 - mike.groff@gatech.edu - Michael Groff
 - amlk@gatech.edu - Ali Lakdawala
