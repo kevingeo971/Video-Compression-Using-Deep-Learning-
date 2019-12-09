@@ -2,6 +2,16 @@ import cv2
 import os
 import argparse
 
+'''
+This function is used to read in the data 
+and return a list of frames as 3 dimensinal
+numpy images.
+
+Input : relative path to inpyt video
+
+Output : list of numpy array 
+'''
+
 def preprocessing( path_from ):
     
     print('\n Preprocessing ..\n')

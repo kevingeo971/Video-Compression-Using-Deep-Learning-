@@ -17,9 +17,15 @@ in the video. e.g frame_1 --> frame_00001 when there are less than 10000
 frames. Failure to do so will result in frames misordering such as 
 frame_1,frame_10 appearing next to one another
 
-Inputs: path to the datasets files, flag to use UE-DETRAC data
+Inputs: 
+    - path : path to the datasets files, 
+    - detrac : flag to use UE-DETRAC data, Fasle by default
+    - train = False by default, True is training, Fasle if testing
 
-Output: loaded data resized to 100x100 tensor ready to input into the dataset
+Output: 
+    - train_loader : The dataloader 
+    - frames : A list a numpy arrays
+    
 """
 def load_data(path, detrac = False, train = False):
 

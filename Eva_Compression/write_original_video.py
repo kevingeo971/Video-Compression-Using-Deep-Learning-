@@ -2,6 +2,17 @@
 This function takes in index_list, data_path , save_path as the arguments. It writes a video consisting 
 of the frame in data_path into save_path and writes a text file with the indexed of the representative 
 frame into the same directory 
+
+inputs :
+
+    - frames = list of frames i.e. numpy arrays
+    - scale = scale to resize, int
+    - data_path = path to original data, string
+    - save_original_path = path to save scaled video, string
+    - Detrac = For development purposes only, True
+    
+outputs : None
+
 '''
 
 import cv2
