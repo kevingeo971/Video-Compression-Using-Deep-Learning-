@@ -2,7 +2,7 @@
 
 
 # Note from the authors:
-This project repo has been retired, please refer to the Eva_Compression Directory for recent project work
+This project repo has been retired, please refer to the Eva_Compression Directory for recent project work.
 
 
 # Team Contributions
